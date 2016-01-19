@@ -1,6 +1,7 @@
 package org.example.ankodemo
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType.TYPE_CLASS_TEXT
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
@@ -16,7 +17,7 @@ class MainActivity : Activity() {
     }
 
     fun tryLogin(ui: AnkoContext<MainActivity>, name: CharSequence?, password: CharSequence?) {
-        ui.async {
+        ui.async() {
             Thread.sleep(500)
 
             activityUiThreadWithContext {
@@ -42,29 +43,37 @@ class MainActivityUi : AnkoComponent<MainActivity> {
     }
 
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
-        verticalLayout {
-            padding = dip(32)
+        frameLayout() {
 
-            imageView(android.R.drawable.ic_menu_manage).lparams {
-                margin = dip(16)
-                gravity = Gravity.CENTER
+            imageView(R.drawable.kotlin).lparams(width = matchParent, height = matchParent, gravity = top) {
+
             }
 
-            val name = editText {
-                hintResource = R.string.name
-            }
-            val password = editText {
-                hintResource = R.string.password
-                inputType = TYPE_CLASS_TEXT or TYPE_TEXT_VARIATION_PASSWORD
-            }
+            verticalLayout {
+                padding = dip(32)
 
-            button("Log in") {
-                onClick {
-                    ui.owner.tryLogin(ui, name.text, password.text)
+                imageView(android.R.drawable.ic_menu_manage).lparams {
+                    margin = dip(16)
+                    gravity = Gravity.CENTER
                 }
-            }
 
-            myRichView()
-        }.style(customStyle)
+                val name = editText {
+                    hintResource = R.string.name
+                }
+                val password = editText {
+                    hintResource = R.string.password
+                    inputType = TYPE_CLASS_TEXT or TYPE_TEXT_VARIATION_PASSWORD
+                }
+
+                button("Log in") {
+                    onClick {
+                        ui.owner.tryLogin(ui, name.text, password.text)
+                    }
+                }
+
+                myRichView()
+            }.style(customStyle)
+
+        }
     }
 }
